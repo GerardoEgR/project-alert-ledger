@@ -8,7 +8,8 @@ export function Auth(...roles: ValidRoles[]) {
 
   return applyDecorators(
     RoleProtected(...roles),
-    UseGuards(AuthGuard(), UserRoleGuard) // Use AuthGuard for JWT authentication and UserRoleGuard for role-based access control,
+    // Use AuthGuard for JWT authentication and UserRoleGuard for role-based access control.
+    UseGuards(AuthGuard(), UserRoleGuard)
   );
 
 }

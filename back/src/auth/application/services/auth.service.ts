@@ -45,7 +45,7 @@ export class AuthService {
    *  This method logs in a user by validating the provided credentials.
    *  It uses the UserService to find the user and validate the password.
    *  If the credentials are valid, it returns the user object along with a JWT token.
-   *  If the credentials are invalid, it throws a BadRequestException.
+   *  
    *  @param loginDto - The login data transfer object containing email and password.
    *  @returns - The logged-in user object along with a JWT token.
    *  @throws BadRequestException if the credentials are invalid.

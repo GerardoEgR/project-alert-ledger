@@ -10,7 +10,8 @@ import { UserCreator, UserFinder, UserFindOneBy } from '@user/domain/interfaces/
 /**
  * This service handles user-related operations such as creating a user, logging in, and removing a user.
  * It uses TypeORM to interact with the database and bcrypt for password hashing.
- * @implements {UserCreator} - It implements the UserCreator UserFinder, UserFindOneBy interfaces to provide the necessary methods for creating and searching users.
+ * @implements {UserCreator} - It implements the UserCreator UserFinder, UserFindOneBy interfaces to 
+ * provide the necessary methods for creating and searching users.
  */
 @Injectable()
 export class UserService implements UserCreator, UserFinder, UserFindOneBy {
