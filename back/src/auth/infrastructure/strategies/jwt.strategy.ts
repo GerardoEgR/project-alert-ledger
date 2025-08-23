@@ -3,8 +3,8 @@ import { Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { User } from "@user/domain/entities/user.entity";
-import { UserFindOneBy } from "@user/domain/interfaces/user-creator.interface";
-import { USER_FIND_ONE_BY } from "@user/infrastructure/tokens/user.constants";
+import { UserCrud } from "@user/domain/interfaces/user-crud.interface";
+import { USER_CRUD } from "@user/infrastructure/tokens/user.constants";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
 /**
@@ -17,8 +17,8 @@ import { ExtractJwt, Strategy } from "passport-jwt";
 export class JwtStrategy extends PassportStrategy(Strategy) {
 
   constructor(
-    // Inject the UserFindOneBy interface to find users by ID
-    @Inject(USER_FIND_ONE_BY) private readonly userFindOneBy: UserFindOneBy,
+    // Inject the UserCrud interface to find users by their ID
+    @Inject(USER_CRUD) private readonly userCrud: UserCrud,
 
     // Inject the ConfigService to access environment variables
     configService: ConfigService,
@@ -36,7 +36,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     const { id } = payload;
 
-    const user = await this.userFindOneBy.findOneBy(id);
+    const user = await this.userCrud.findOneBy(id);
 
     if (!user)
       throw new UnauthorizedException('Invalid token');

@@ -5,7 +5,7 @@ import { User } from '@user/domain/entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from '@auth/application/dto/login.dto';
-import { UserCreator, UserFinder, UserFindOneBy } from '@user/domain/interfaces/user-creator.interface';
+import { UserCrud } from '@user/domain/interfaces/user-crud.interface';
 
 /**
  * This service handles user-related operations such as creating a user, logging in, and removing a user.
@@ -14,7 +14,7 @@ import { UserCreator, UserFinder, UserFindOneBy } from '@user/domain/interfaces/
  * provide the necessary methods for creating and searching users.
  */
 @Injectable()
-export class UserService implements UserCreator, UserFinder, UserFindOneBy {
+export class UserService implements UserCrud {
 
   constructor(
     @InjectRepository(User)

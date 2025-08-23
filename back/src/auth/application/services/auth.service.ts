@@ -3,8 +3,9 @@ import { CreateUserDto } from "@user/application/dto/create-user.dto";
 import { LoginDto } from "../dto/login.dto";
 import { JwtPayload } from "@auth/domain/interfaces/jwt-payload.interface";
 import { JwtService } from "@nestjs/jwt";
-import { USER_CREATOR, USER_FINDER } from "@user/infrastructure/tokens/user.constants";
-import { UserCreator, UserFinder } from "@user/domain/interfaces/user-creator.interface";
+import { USER_CRUD } from "@user/infrastructure/tokens/user.constants";
+import { UserCrud } from "@user/domain/interfaces/user-crud.interface";
+import { User } from "@user/domain/entities/user.entity";
 
 
 /**
@@ -15,10 +16,7 @@ export class AuthService {
 
   constructor(
     // Inject the UserCreator interface to create users 
-    @Inject(USER_CREATOR) private readonly userCreator: UserCreator,
-
-    // Inject the UserFinder interface to find users
-    @Inject(USER_FINDER) private readonly userFinder: UserFinder,
+    @Inject(USER_CRUD) private readonly userCrud: UserCrud,
 
     // Inject the JwtService to generate JWT tokens
     private readonly jwtService: JwtService
@@ -32,7 +30,7 @@ export class AuthService {
    *  @returns - The created user object along with a JWT token.
    **/
   async createUser(createUserDto: CreateUserDto) {
-    const user = await this.userCreator.createUser(createUserDto);
+    const user = await this.userCrud.createUser(createUserDto);
     const { password, ...rest } = user; // Exclude the password from the returned user object
 
     return {
@@ -52,11 +50,18 @@ export class AuthService {
    *  @throws UnauthorizedException if the user is not active.
    **/
   async login(loginDto: LoginDto) {
-    const user = await this.userFinder.login(loginDto);
+    const user = await this.userCrud.login(loginDto);
     const { password, ...rest } = user; // Exclude the password from the returned user object
 
     return {
       ...rest,
+      token: this.getJwtToken({ id: user.id }) // Generate JWT token for the user
+    };
+  }
+
+  checkAuthStatus(user: User) {
+    return {
+      ...user,
       token: this.getJwtToken({ id: user.id }) // Generate JWT token for the user
     };
   }
